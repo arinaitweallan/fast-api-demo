@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from models import Product
+from database import session
 
 app = FastAPI()
 
@@ -17,6 +18,10 @@ products = [
 
 @app.get("/products")
 def get_all_products():
+    # db connection
+    db = session()
+    # query
+    db.query()
     return products
 
 @app.get("/product/{id}")
@@ -25,8 +30,26 @@ def get_product(id: int):
     for product in products:
         if product.id == id:
             return product
-    return products[id-1]
+    return "product not found"
 
 @app.post("/product")
 def add_product(product: Product):
     products.append(product)
+
+@app.put("/product")
+def update_product(id: int, product: Product):
+    for i in range(len(products)):
+        if products[i].id == id:
+            products[i] = product
+            return "product added successfully"
+
+    return "product not found"
+
+@app.delete("/product")
+def delete_product(id: int):
+    for i in range(len(products)):
+        if products[i].id == id:
+            del products[i]
+            return "product deleted successfully"
+
+    return "product not found"
