@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from models import Product
 from database import session
+import database_models
 
 app = FastAPI()
 
